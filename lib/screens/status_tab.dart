@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -72,32 +71,21 @@ class StatusTab extends HookWidget {
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     child: Text("No ${current.key} Found"),
                   )
-                : Column(
-                    children: List.generate(
-                      current.value.value.length,
-                      (index) => ListTile(
-                        minVerticalPadding: 16,
-                        leading: MediaThumbnail(file: current.value.value[index] as File),
-                        title: Text(
-                          basename(current.value.value[index].path),
-                          overflow: TextOverflow.ellipsis,
+                : Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6),
+                    child: Wrap(
+                      children: List.generate(
+                        current.value.value.length,
+                        (index) => GestureDetector(
+                          onTap: () => waOpenFile(context, current.value.value[index].path),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(40),
+                            child: Container(
+                              padding: const EdgeInsets.all(5.0),
+                              child: MediaThumbnail(file: current.value.value[index] as File),
+                            ),
+                          ),
                         ),
-                        onTap: () => waOpenFile(context, current.value.value[index].path),
-                        subtitle: Text(
-                          (current.value.value[index] as File).lengthSync().getFileSize(),
-                        ),
-                        trailing: IconButton(
-                            onPressed: () async {
-                              await Directory(appPath).create();
-                              await Directory(appPath + "/Status").create();
-                              await (current.value.value[index] as File)
-                                  .copy(appPath + "/Status/${basename(imageFile.value[index].path)}");
-                              BotToast.showText(
-                                  text: "Saved to Internal/WhishApp/Status",
-                                  textStyle: context.textTheme.bodyText1!.copyWith(color: Colors.white));
-                            },
-                            tooltip: "Backup",
-                            icon: const Icon(Icons.download_outlined)),
                       ),
                     ),
                   ),
@@ -124,21 +112,21 @@ class MediaThumbnail extends StatelessWidget {
         ? extension(file.path) == ".svg"
             ? SvgPicture.file(
                 file,
-                width: 60,
-                height: 60,
+                width: 100,
+                height: 100,
               )
             : Image(
                 image: ResizeImage(
                   FileImage(file),
-                  width: 60,
-                  height: 60,
+                  width: 100,
+                  height: 100,
                 ),
               )
         : FutureBuilder<Uint8List?>(
             future: VideoThumbnail.thumbnailData(
               video: file.path,
               imageFormat: ImageFormat.JPEG,
-              maxWidth: 60,
+              maxWidth: 100,
               quality: 25,
             ),
             builder: (ctx, snap) => snap.data != null ? Image.memory(snap.data!) : const SizedBox(),

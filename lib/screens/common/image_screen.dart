@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as p;
+import 'package:path/path.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -176,6 +178,18 @@ class _ImageScreenState extends State<ImageScreen> {
                         padding: const EdgeInsets.all(5),
                         icon: const Icon(Icons.open_in_browser),
                         tooltip: "Open with",
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          await Directory(appPath).create();
+                          await (await widget.imageFile).copy(appPath + basename((await widget.imageFile).path));
+                          BotToast.showText(
+                              text: "Saved to Device/WhishApp",
+                              textStyle: context.textTheme.bodyText1!.copyWith(color: Colors.white));
+                        },
+                        padding: const EdgeInsets.all(5),
+                        icon: const Icon(Icons.download_outlined),
+                        tooltip: "Download",
                       ),
                       IconButton(
                         onPressed: () => showPopoverWB(
