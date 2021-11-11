@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.prateeksu.whishapp">
    <application
-        android:label="whishapp"
+        android:label="WhishApp"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

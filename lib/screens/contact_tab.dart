@@ -18,6 +18,9 @@ class _ContactTabState extends State<ContactTab> {
     final _phoneNumberController = TextEditingController();
     final _selectedDialogCountry = useState(CountryPickerUtils.getCountryByPhoneCode('91'));
 
+    void launchWhatsapp() =>
+        launch("https://wa.me/+${_selectedDialogCountry.value.phoneCode}${_phoneNumberController.text}");
+
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
@@ -53,6 +56,7 @@ class _ContactTabState extends State<ContactTab> {
               child: TextField(
                 controller: _phoneNumberController,
                 keyboardType: TextInputType.number,
+                onSubmitted: (_) => launchWhatsapp(),
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 decoration: const InputDecoration(
                   hintText: "Enter phone number",
@@ -62,8 +66,7 @@ class _ContactTabState extends State<ContactTab> {
             const SizedBox(height: 20),
             Center(
               child: ElevatedButton(
-                onPressed: () =>
-                    launch("https://wa.me/+${_selectedDialogCountry.value.phoneCode}${_phoneNumberController.text}"),
+                onPressed: launchWhatsapp,
                 child: const Text("Open in Whatsapp"),
               ),
             ),
