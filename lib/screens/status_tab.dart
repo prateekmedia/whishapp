@@ -24,11 +24,13 @@ class StatusTab extends HookWidget {
     getFiles() async {
       String currentPath = Platform.isLinux
           ? (await getHomeDirectory()) + "/Downloads/"
-          : Directory(waPath).existsSync()
-              ? waPath
-              : Platform.isAndroid && Directory(secWaPath).existsSync()
-                  ? secWaPath
-                  : "";
+          : Platform.isAndroid
+              ? Directory(waPath).existsSync()
+                  ? waPath
+                  : Directory(secWaPath).existsSync()
+                      ? secWaPath
+                      : ""
+              : "";
       if (currentPath != "") {
         files = Directory(currentPath).listSync();
         imageFile.value = files.where((element) {
@@ -68,7 +70,7 @@ class StatusTab extends HookWidget {
             current.value.value.isEmpty
                 ? Container(
                     padding: const EdgeInsets.symmetric(vertical: 15),
-                    child: const Text("No Images Found"),
+                    child: Text("No ${current.key} Found"),
                   )
                 : Column(
                     children: List.generate(
