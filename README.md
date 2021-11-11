@@ -12,4 +12,3 @@ Enhancing your WhatsApp experience.
 ## License:
 
 WhishApp is licensed under the Apache-2.0 license.
-

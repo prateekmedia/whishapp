@@ -19,7 +19,7 @@ class _ContactTabState extends State<ContactTab> {
     final _selectedDialogCountry = useState(CountryPickerUtils.getCountryByPhoneCode('91'));
 
     void launchWhatsapp() =>
-        launch("https://wa.me/+${_selectedDialogCountry.value.phoneCode}${_phoneNumberController.text}");
+        launch("https://wa.me/+" + _selectedDialogCountry.value.phoneCode + _phoneNumberController.text);
 
     return Center(
       child: SingleChildScrollView(
