@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart';
-import 'package:whishapp/screens/common/image_screen.dart';
+import 'package:whishapp/screens/screens.dart';
 
 waOpenFile(context, String path, {VoidCallback? fetchAssets}) {
   String? mimeType = lookupMimeType(basename(path).toLowerCase());
@@ -19,13 +19,10 @@ waOpenFile(context, String path, {VoidCallback? fetchAssets}) {
       );
       break;
     case "video":
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (_) => VideoScreen(
-      //         videoFile: Future.value(File(path)), fetchAssets: fetchAssets),
-      //   ),
-      // );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => VideoScreen(filePath: path)),
+      );
       break;
     default:
       OpenFile.open(path);

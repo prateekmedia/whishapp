@@ -11,4 +11,4 @@ Future<String> getHomeDirectory() async {
   return homeDir.join('/');
 }
 
-String appPath = Platform.isAndroid ? "/storage/emulated/0/WhishApp" : "/home/prateeksu/WhishApp";
+String appPath = Platform.isAndroid ? "/storage/emulated/0/WhishApp/" : "/home/prateeksu/WhishApp/";

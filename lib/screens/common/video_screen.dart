@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:better_player/better_player.dart';
 import 'package:path/path.dart';
 
-class NormalPlayerPage extends StatefulWidget {
-  const NormalPlayerPage({Key? key, required this.filePath}) : super(key: key);
+class VideoScreen extends StatefulWidget {
+  const VideoScreen({Key? key, required this.filePath}) : super(key: key);
 
   final String filePath;
 
   @override
-  _NormalPlayerPageState createState() => _NormalPlayerPageState();
+  _VideoScreenState createState() => _VideoScreenState();
 }
 
-class _NormalPlayerPageState extends State<NormalPlayerPage> {
+class _VideoScreenState extends State<VideoScreen> {
   late BetterPlayerController _betterPlayerController;
   late BetterPlayerDataSource _betterPlayerDataSource;
 
