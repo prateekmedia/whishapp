@@ -1,7 +1,6 @@
 name: whishapp
-description: A new Flutter project.
-
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+description: Enhancing your WhatsApp experience.
+publish_to: 'none'
 version: 1.0.0+1
 
 environment:
@@ -25,6 +24,7 @@ dependencies:
   flutter_svg: ^0.23.0+1
   video_thumbnail: ^0.4.3
   better_player: ^0.0.79
+  whatsapp_unilink: ^2.0.0
 
 dev_dependencies:
   flutter_test:

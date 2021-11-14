@@ -32,4 +32,4 @@ flutter build <windows/apk/linux>
 
 ### License
 
-**WhishApp** is licensed under the [**Apache-2.0 license**](LICENSE.md).
+**WhishApp** is licensed under the [**GPL-2.0 license**](LICENSE.md).

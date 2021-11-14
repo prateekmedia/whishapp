@@ -35,46 +35,47 @@ class MyHomePage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tabController = useTabController(initialLength: 3, initialIndex: 1);
+    final tabController = useTabController(initialLength: 5, initialIndex: 1);
 
-    return DefaultTabController(
-      length: 3,
-      initialIndex: 1,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("WhishApp"),
-          actions: [
-            PopupMenuButton<int>(
-              itemBuilder: (ctx) => const [
-                PopupMenuItem(
-                  value: 0,
-                  child: Text("Settings"),
-                ),
-                PopupMenuItem(
-                  value: 1,
-                  child: Text("About"),
-                ),
-              ],
-            ),
-          ],
-          elevation: 0.8,
-          bottom: TabBar(
-            controller: tabController,
-            tabs: const [
-              Tab(icon: Icon(Icons.home)),
-              Tab(text: "CONTACT"),
-              Tab(text: "STATUS"),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("WhishApp"),
+        actions: [
+          PopupMenuButton<int>(
+            itemBuilder: (ctx) => const [
+              PopupMenuItem(
+                value: 0,
+                child: Text("Settings"),
+              ),
+              PopupMenuItem(
+                value: 1,
+                child: Text("About"),
+              ),
             ],
           ),
-        ),
-        body: TabBarView(
+        ],
+        elevation: 0.8,
+        bottom: TabBar(
+          isScrollable: true,
           controller: tabController,
-          children: [
-            HomeTab(goToPage: (value) => tabController.animateTo(value)),
-            const ContactTab(),
-            const StatusTab(),
+          tabs: const [
+            Tab(icon: Icon(Icons.home)),
+            Tab(text: "CONTACT"),
+            Tab(text: "STATUS"),
+            Tab(text: "STICKERS"),
+            Tab(text: "TOOLS"),
           ],
         ),
+      ),
+      body: TabBarView(
+        controller: tabController,
+        children: [
+          HomeTab(goToPage: (value) => tabController.animateTo(value)),
+          const ContactTab(),
+          const StatusTab(),
+          const StickersTab(),
+          const ToolsTab(),
+        ],
       ),
     );
   }

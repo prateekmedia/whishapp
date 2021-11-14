@@ -24,6 +24,16 @@ class HomeTab extends StatelessWidget {
             onPressed: () => goToPage(2),
             text: 'WA Status Saver',
           ),
+          const SizedBox(height: 20),
+          HomeSButton(
+            onPressed: () => goToPage(3),
+            text: 'Create Sticker pack',
+          ),
+          const SizedBox(height: 20),
+          HomeSButton(
+            onPressed: () => goToPage(4),
+            text: 'Text tools',
+          ),
         ],
       ),
     );

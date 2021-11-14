@@ -62,6 +62,7 @@ class StatusTab extends HookWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           for (MapEntry<String, ValueNotifier<List<FileSystemEntity>>> current
               in {"Photos": imageFile, "Videos": videoFile}.entries) ...[
@@ -71,21 +72,26 @@ class StatusTab extends HookWidget {
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     child: Text("No ${current.key} Found"),
                   )
-                : Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    child: Wrap(
-                      children: List.generate(
-                        current.value.value.length,
-                        (index) => GestureDetector(
-                          onTap: () => waOpenFile(context, current.value.value[index].path),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(40),
-                            child: Container(
-                              padding: const EdgeInsets.all(5.0),
-                              child: MediaThumbnail(file: current.value.value[index] as File),
-                            ),
-                          ),
+                : Flexible(
+                    fit: FlexFit.loose,
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      primary: false,
+                      itemCount: current.value.value.length,
+                      itemBuilder: (_, index) => ClipRRect(
+                        borderRadius: BorderRadius.circular(40),
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () => waOpenFile(
+                              context, current.value.value[index].path),
+                          child: MediaThumbnail(
+                              file: current.value.value[index] as File),
                         ),
+                      ),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisSpacing: 5,
+                        crossAxisSpacing: 5,
+                        crossAxisCount: (context.width / 200 + 1 / 2).toInt(),
                       ),
                     ),
                   ),
@@ -129,7 +135,9 @@ class MediaThumbnail extends StatelessWidget {
               maxWidth: 100,
               quality: 25,
             ),
-            builder: (ctx, snap) => snap.data != null ? Image.memory(snap.data!) : const SizedBox(),
+            builder: (ctx, snap) => snap.data != null
+                ? Image.memory(snap.data!)
+                : const Placeholder(),
           );
   }
 }
