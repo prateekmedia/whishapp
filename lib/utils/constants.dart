@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 
+String appName = "WhishApp";
+
 String waPath = "/storage/emulated/0/WhatsApp/Media/.Statuses";
 String secWaPath = "/storage/emulated/0/Android/media/com.whatsapp/WhatsApp/Media/.Statuses";
 

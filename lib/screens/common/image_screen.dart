@@ -184,7 +184,7 @@ class _ImageScreenState extends State<ImageScreen> {
                           await Directory(appPath).create();
                           await (await widget.imageFile).copy(appPath + basename((await widget.imageFile).path));
                           BotToast.showText(
-                              text: "Saved to Device/WhishApp",
+                              text: "Saved to Device/$appName",
                               textStyle: context.textTheme.bodyText1!.copyWith(color: Colors.white));
                         },
                         padding: const EdgeInsets.all(5),

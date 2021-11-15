@@ -23,8 +23,7 @@ class _VideoScreenState extends State<VideoScreen> {
 
   @override
   void initState() {
-    BetterPlayerConfiguration betterPlayerConfiguration =
-        const BetterPlayerConfiguration(
+    BetterPlayerConfiguration betterPlayerConfiguration = const BetterPlayerConfiguration(
       autoPlay: true,
       looping: true,
     );
@@ -51,12 +50,10 @@ class _VideoScreenState extends State<VideoScreen> {
           IconButton(
             onPressed: () async {
               await Directory(appPath).create();
-              await File(widget.filePath)
-                  .copy(appPath + basename(widget.filePath));
+              await File(widget.filePath).copy(appPath + basename(widget.filePath));
               BotToast.showText(
-                  text: "Saved to Device/WhishApp",
-                  textStyle: context.textTheme.bodyText1!
-                      .copyWith(color: Colors.white));
+                  text: "Saved to Device/$appName",
+                  textStyle: context.textTheme.bodyText1!.copyWith(color: Colors.white));
             },
             padding: const EdgeInsets.all(5),
             icon: const Icon(Icons.download_outlined),
