@@ -79,19 +79,17 @@ class StatusTab extends HookWidget {
                       primary: false,
                       itemCount: current.value.value.length,
                       itemBuilder: (_, index) => ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
+                        borderRadius: BorderRadius.circular(20),
                         child: GestureDetector(
                           behavior: HitTestBehavior.translucent,
-                          onTap: () => waOpenFile(
-                              context, current.value.value[index].path),
-                          child: MediaThumbnail(
-                              file: current.value.value[index] as File),
+                          onTap: () => waOpenFile(context, current.value.value[index].path),
+                          child: MediaThumbnail(file: current.value.value[index] as File),
                         ),
                       ),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisSpacing: 5,
-                        crossAxisSpacing: 5,
-                        crossAxisCount: (context.width / 200 + 1 / 2).toInt(),
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        crossAxisCount: (context.width / 200 + 2).toInt(),
                       ),
                     ),
                   ),
@@ -122,6 +120,7 @@ class MediaThumbnail extends StatelessWidget {
                 height: 100,
               )
             : Image(
+                fit: BoxFit.fill,
                 image: ResizeImage(
                   FileImage(file),
                   width: 100,
@@ -136,7 +135,10 @@ class MediaThumbnail extends StatelessWidget {
               quality: 25,
             ),
             builder: (ctx, snap) => snap.data != null
-                ? Image.memory(snap.data!)
+                ? Image.memory(
+                    snap.data!,
+                    fit: BoxFit.fill,
+                  )
                 : const Placeholder(),
           );
   }

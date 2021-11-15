@@ -42,6 +42,12 @@ class MyHomePage extends HookWidget {
         title: const Text("WhishApp"),
         actions: [
           PopupMenuButton<int>(
+            onSelected: (index) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (ctx) => index == 0 ? const SettingsScreen() : const AboutScreen(),
+              ),
+            ),
             itemBuilder: (ctx) => const [
               PopupMenuItem(
                 value: 0,
