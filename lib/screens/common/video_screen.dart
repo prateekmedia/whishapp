@@ -23,16 +23,23 @@ class _VideoScreenState extends State<VideoScreen> {
 
   @override
   void initState() {
-    BetterPlayerConfiguration betterPlayerConfiguration = const BetterPlayerConfiguration(
-      autoPlay: true,
-      looping: true,
-    );
+    BetterPlayerConfiguration betterPlayerConfiguration = const BetterPlayerConfiguration(autoPlay: true);
     _betterPlayerDataSource = BetterPlayerDataSource(
       BetterPlayerDataSourceType.file,
       widget.filePath,
     );
-    _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
-    _betterPlayerController.setupDataSource(_betterPlayerDataSource);
+    _betterPlayerController = BetterPlayerController(
+      betterPlayerConfiguration,
+      betterPlayerDataSource: _betterPlayerDataSource,
+    );
+
+    _betterPlayerController.addEventsListener((BetterPlayerEvent event) {
+      if (event.betterPlayerEventType == BetterPlayerEventType.initialized) {
+        _betterPlayerController
+            .setOverriddenAspectRatio(_betterPlayerController.videoPlayerController!.value.aspectRatio);
+        setState(() {});
+      }
+    });
     super.initState();
   }
 
