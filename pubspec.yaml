@@ -1,7 +1,7 @@
 name: whishapp
 description: Enhancing your WhatsApp experience.
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.2
 
 environment:
   sdk: ">=2.15.0-178.1.beta <3.0.0"
@@ -17,21 +17,22 @@ dependencies:
   bot_toast: ^4.0.1
   mime: ^1.0.1
   open_file: ^3.2.1
-  permission_handler: ^8.2.6
-  share_plus: ^3.0.4
-  photo_view: ^0.13.0
+  permission_handler: ^10.1.0
+  share_plus: ^4.5.3
+  photo_view: ^0.14.0
   intl: ^0.17.0
-  flutter_svg: ^0.23.0+1
-  video_thumbnail: ^0.4.3
+  flutter_svg: ^1.1.5
+  video_thumbnail: ^0.5.3
   better_player: ^0.0.79
   whatsapp_unilink: ^2.0.0
   flutter_whatsapp_stickers: ^1.0.1+5
   package_info_plus: ^1.3.0
+  cross_file: ^0.3.3+2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.1
 
 flutter:
   uses-material-design: true

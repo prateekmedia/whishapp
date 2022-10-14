@@ -9,6 +9,11 @@
 .history
 .svn/
 linux/
+ios/
+macos/
+test/
+web/
+windows/
 .metadata
 *.keystore
 

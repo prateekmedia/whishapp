@@ -3,7 +3,13 @@ import 'package:flutter/material.dart';
 
 class AdvancedGestureDetector extends StatelessWidget {
   final Widget child;
-  final VoidCallback? onHold, onTap, onDoubleTap, onSwipeDown, onSwipeUp, onSwipeLeft, onSwipeRight;
+  final VoidCallback? onHold,
+      onTap,
+      onDoubleTap,
+      onSwipeDown,
+      onSwipeUp,
+      onSwipeLeft,
+      onSwipeRight;
   final Duration duration;
   final HitTestBehavior behavior;
   final double sensitivity;
@@ -26,10 +32,11 @@ class AdvancedGestureDetector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late Timer _timer;
+    late Timer timer;
     return GestureDetector(
-      onLongPressStart: onHold != null ? (_) => _timer = Timer(duration, onHold!) : null,
-      onLongPressEnd: onHold != null ? (_) => _timer.cancel() : null,
+      onLongPressStart:
+          onHold != null ? (_) => timer = Timer(duration, onHold!) : null,
+      onLongPressEnd: onHold != null ? (_) => timer.cancel() : null,
       onHorizontalDragUpdate: onSwipeRight != null || onSwipeLeft != null
           ? (event) {
               if (onSwipeRight != null && event.delta.dx > sensitivity) {
@@ -48,10 +55,10 @@ class AdvancedGestureDetector extends StatelessWidget {
               }
             }
           : null,
-      child: child,
       onTap: onTap,
       onDoubleTap: onDoubleTap,
       behavior: behavior,
+      child: child,
     );
   }
 }

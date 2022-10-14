@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_pickers.dart';
 
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:whatsapp_unilink/whatsapp_unilink.dart';
 
 class ContactTab extends StatefulHookWidget {
@@ -18,16 +18,16 @@ class ContactTab extends StatefulHookWidget {
 class _ContactTabState extends State<ContactTab> {
   @override
   Widget build(BuildContext context) {
-    final _phoneNumberController = TextEditingController();
-    final _messageController = TextEditingController();
-    final _selectedDialogCountry =
+    final phoneNumberController = TextEditingController();
+    final messageController = TextEditingController();
+    final selectedDialogCountry =
         useState(CountryPickerUtils.getCountryByPhoneCode('91'));
 
     void launchWhatsapp() {
-      launch(WhatsAppUnilink(
-        phoneNumber: _selectedDialogCountry.value.phoneCode +
-            _phoneNumberController.text,
-        text: _messageController.text,
+      launchUrlString(WhatsAppUnilink(
+        phoneNumber:
+            selectedDialogCountry.value.phoneCode + phoneNumberController.text,
+        text: messageController.text,
       ).toString());
     }
 
@@ -52,7 +52,7 @@ class _ContactTabState extends State<ContactTab> {
                     isSearchable: true,
                     title: const Text('Select your phone code'),
                     onValuePicked: (Country country) =>
-                        _selectedDialogCountry.value = country,
+                        selectedDialogCountry.value = country,
                     itemBuilder: _buildDialogItem,
                     priorityList: [
                       CountryPickerUtils.getCountryByIsoCode('IN'),
@@ -61,14 +61,14 @@ class _ContactTabState extends State<ContactTab> {
                   ),
                 ),
               ),
-              title: _buildDialogItem(_selectedDialogCountry.value),
+              title: _buildDialogItem(selectedDialogCountry.value),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Column(
                 children: [
                   TextField(
-                    controller: _phoneNumberController,
+                    controller: phoneNumberController,
                     keyboardType: TextInputType.number,
                     onSubmitted: (_) => launchWhatsapp(),
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -76,7 +76,7 @@ class _ContactTabState extends State<ContactTab> {
                   ),
                   const SizedBox(height: 8),
                   TextField(
-                    controller: _messageController,
+                    controller: messageController,
                     maxLines: null,
                     decoration:
                         const InputDecoration(hintText: "Message (optional)"),
@@ -97,15 +97,15 @@ class _ContactTabState extends State<ContactTab> {
     );
   }
 
-  Widget _buildDialogItem(Country _selectedDialogCountry) {
+  Widget _buildDialogItem(Country selectedDialogCountry) {
     return Row(
       children: <Widget>[
         const SizedBox(width: 8.0),
-        CountryPickerUtils.getDefaultFlagImage(_selectedDialogCountry),
+        CountryPickerUtils.getDefaultFlagImage(selectedDialogCountry),
         const SizedBox(width: 8.0),
-        Text("+${_selectedDialogCountry.phoneCode}"),
+        Text("+${selectedDialogCountry.phoneCode}"),
         const SizedBox(width: 8.0),
-        Flexible(child: Text(_selectedDialogCountry.name))
+        Flexible(child: Text(selectedDialogCountry.name))
       ],
     );
   }

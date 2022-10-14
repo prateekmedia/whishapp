@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:better_player/better_player.dart';
 import 'package:open_file/open_file.dart';
@@ -14,7 +15,7 @@ class VideoScreen extends StatefulWidget {
   final String filePath;
 
   @override
-  _VideoScreenState createState() => _VideoScreenState();
+  State createState() => _VideoScreenState();
 }
 
 class _VideoScreenState extends State<VideoScreen> {
@@ -23,7 +24,8 @@ class _VideoScreenState extends State<VideoScreen> {
 
   @override
   void initState() {
-    BetterPlayerConfiguration betterPlayerConfiguration = const BetterPlayerConfiguration(autoPlay: true);
+    BetterPlayerConfiguration betterPlayerConfiguration =
+        const BetterPlayerConfiguration(autoPlay: true);
     _betterPlayerDataSource = BetterPlayerDataSource(
       BetterPlayerDataSourceType.file,
       widget.filePath,
@@ -35,8 +37,8 @@ class _VideoScreenState extends State<VideoScreen> {
 
     _betterPlayerController.addEventsListener((BetterPlayerEvent event) {
       if (event.betterPlayerEventType == BetterPlayerEventType.initialized) {
-        _betterPlayerController
-            .setOverriddenAspectRatio(_betterPlayerController.videoPlayerController!.value.aspectRatio);
+        _betterPlayerController.setOverriddenAspectRatio(
+            _betterPlayerController.videoPlayerController!.value.aspectRatio);
         setState(() {});
       }
     });
@@ -57,17 +59,23 @@ class _VideoScreenState extends State<VideoScreen> {
           IconButton(
             onPressed: () async {
               await Directory(appPath).create();
-              await File(widget.filePath).copy(appPath + basename(widget.filePath));
+              await File(widget.filePath)
+                  .copy(appPath + basename(widget.filePath));
               BotToast.showText(
                   text: "Saved to Device/$appName",
-                  textStyle: context.textTheme.bodyText1!.copyWith(color: Colors.white));
+                  textStyle: context.textTheme.bodyText1!
+                      .copyWith(color: Colors.white));
             },
             padding: const EdgeInsets.all(5),
             icon: const Icon(Icons.download_outlined),
             tooltip: "Download",
           ),
           IconButton(
-            onPressed: () async => Share.shareFiles([widget.filePath]),
+            onPressed: () async => Share.shareXFiles(
+              [
+                XFile(widget.filePath),
+              ],
+            ),
             icon: const Icon(Icons.share),
           ),
         ],

@@ -22,7 +22,7 @@ class StatusTab extends HookWidget {
 
     getFiles() async {
       String currentPath = Platform.isLinux
-          ? (await getHomeDirectory()) + "/Downloads/"
+          ? "${await getHomeDirectory()}/Downloads/"
           : Platform.isAndroid
               ? Directory(waPath).existsSync()
                   ? waPath
@@ -55,6 +55,7 @@ class StatusTab extends HookWidget {
 
     useEffect(() {
       grantStoragePermission();
+      return;
     }, []);
 
     return SingleChildScrollView(
@@ -82,8 +83,10 @@ class StatusTab extends HookWidget {
                         borderRadius: BorderRadius.circular(20),
                         child: GestureDetector(
                           behavior: HitTestBehavior.translucent,
-                          onTap: () => waOpenFile(context, current.value.value[index].path),
-                          child: MediaThumbnail(file: current.value.value[index] as File),
+                          onTap: () => waOpenFile(
+                              context, current.value.value[index].path),
+                          child: MediaThumbnail(
+                              file: current.value.value[index] as File),
                         ),
                       ),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
