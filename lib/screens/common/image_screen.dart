@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -26,7 +27,7 @@ class ImageScreen extends StatefulWidget {
   final VoidCallback? fetchAssets;
 
   @override
-  _ImageScreenState createState() => _ImageScreenState();
+  State createState() => _ImageScreenState();
 }
 
 class _ImageScreenState extends State<ImageScreen> {
@@ -40,11 +41,15 @@ class _ImageScreenState extends State<ImageScreen> {
       if (file.existsSync() && file.readAsBytesSync().isNotEmpty) {
         var img = Image.file(file);
         Completer<ui.Image> completer = Completer<ui.Image>();
-        img.image.resolve(const ImageConfiguration()).addListener(ImageStreamListener((ImageInfo image, bool _) {
+        img.image
+            .resolve(const ImageConfiguration())
+            .addListener(ImageStreamListener((ImageInfo image, bool _) {
           completer.complete(image.image);
         }));
         ui.Image info = await completer.future;
-        var newPath = (await widget.imageFile).path.replaceAll(RegExp(r'/storage/emulated/0/'), 'Internal Storage/');
+        var newPath = (await widget.imageFile)
+            .path
+            .replaceAll(RegExp(r'/storage/emulated/0/'), 'Internal Storage/');
         newPath = p.dirname(newPath);
         if (newPath.contains('/storage/')) {
           var listPath = p.split(p.relative(newPath));
@@ -63,7 +68,8 @@ class _ImageScreenState extends State<ImageScreen> {
               children: [
                 Text(
                   "Details",
-                  style: context.textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w600),
+                  style: context.textTheme.bodyText1!
+                      .copyWith(fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 15),
                 Row(
@@ -73,7 +79,8 @@ class _ImageScreenState extends State<ImageScreen> {
                     Expanded(
                       child: Text(
                           snapshot.hasData
-                              ? DateFormat('dd MMMM yyy hh:mm a').format(snapshot.data!.lastModifiedSync())
+                              ? DateFormat('dd MMMM yyy hh:mm a')
+                                  .format(snapshot.data!.lastModifiedSync())
                               : "",
                           style: const TextStyle(fontWeight: FontWeight.w600)),
                     ),
@@ -90,15 +97,25 @@ class _ImageScreenState extends State<ImageScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(snapshot.hasData ? p.basename(snapshot.data!.path) : "",
-                                style: const TextStyle(fontWeight: FontWeight.w600)),
+                            Text(
+                                snapshot.hasData
+                                    ? p.basename(snapshot.data!.path)
+                                    : "",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w600)),
                             Text(newPath, style: context.textTheme.bodyText2),
                             Row(
                               children: [
-                                Text(snapshot.hasData ? p.basename(snapshot.data!.lengthSync().getFileSize()) : "",
+                                Text(
+                                    snapshot.hasData
+                                        ? p.basename(snapshot.data!
+                                            .lengthSync()
+                                            .getFileSize())
+                                        : "",
                                     style: context.textTheme.bodyText2),
                                 const SizedBox(width: 40),
-                                Text("${info.width}x${info.height}", style: context.textTheme.bodyText2),
+                                Text("${info.width}x${info.height}",
+                                    style: context.textTheme.bodyText2),
                               ],
                             )
                           ],
@@ -113,29 +130,34 @@ class _ImageScreenState extends State<ImageScreen> {
       }
     }
 
-    _toggleOverlay() {
+    toggleOverlay() {
       setState(() {
         _isOpen = !_isOpen;
       });
-      Future.delayed(const Duration(milliseconds: 100)).whenComplete(() => _isOpen
-          ? SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values)
-          : SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []));
+      Future.delayed(const Duration(milliseconds: 100)).whenComplete(() =>
+          _isOpen
+              ? SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+                  overlays: SystemUiOverlay.values)
+              : SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+                  overlays: []));
     }
 
     return WillPopScope(
       onWillPop: () async {
-        await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
+        await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+            overlays: SystemUiOverlay.values);
         return true;
       },
       child: Scaffold(
         body: Stack(
           children: [
             AdvancedGestureDetector(
-              onTap: _toggleOverlay,
+              onTap: toggleOverlay,
               onSwipeUp: _isOpen && !_areDetailsVisible ? showDetails : null,
               onSwipeDown: _isOpen
-                  ? () => context.back(
-                      () => SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values))
+                  ? () => context.back(() =>
+                      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+                          overlays: SystemUiOverlay.values))
                   : null,
               child: Container(
                 alignment: Alignment.center,
@@ -155,26 +177,38 @@ class _ImageScreenState extends State<ImageScreen> {
               ),
             ),
             AnimatedAlign(
-              alignment: !_isOpen ? const Alignment(0, 1.25) : const Alignment(0, 1),
+              alignment:
+                  !_isOpen ? const Alignment(0, 1.25) : const Alignment(0, 1),
               duration: const Duration(milliseconds: 200),
               child: AnimatedOpacity(
                 opacity: _isOpen ? 1 : 0,
                 duration: const Duration(milliseconds: 150),
                 child: Material(
-                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-                  color: context.isDark ? Colors.black.withAlpha(150) : Colors.white.withAlpha(150),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
+                  color: context.isDark
+                      ? Colors.black.withAlpha(150)
+                      : Colors.white.withAlpha(150),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (Platform.isAndroid)
                         IconButton(
-                          onPressed: () async => Share.shareFiles([(await widget.imageFile).path]),
+                          onPressed: () async => Share.shareXFiles(
+                            [
+                              XFile(
+                                (await widget.imageFile).path,
+                              ),
+                            ],
+                          ),
                           padding: const EdgeInsets.all(5),
                           icon: const Icon(Icons.share),
                           tooltip: "Share",
                         ),
                       IconButton(
-                        onPressed: () async => OpenFile.open((await widget.imageFile).path),
+                        onPressed: () async =>
+                            OpenFile.open((await widget.imageFile).path),
                         padding: const EdgeInsets.all(5),
                         icon: const Icon(Icons.open_in_browser),
                         tooltip: "Open with",
@@ -182,10 +216,12 @@ class _ImageScreenState extends State<ImageScreen> {
                       IconButton(
                         onPressed: () async {
                           await Directory(appPath).create();
-                          await (await widget.imageFile).copy(appPath + basename((await widget.imageFile).path));
+                          await (await widget.imageFile).copy(appPath +
+                              basename((await widget.imageFile).path));
                           BotToast.showText(
                               text: "Saved to Device/$appName",
-                              textStyle: context.textTheme.bodyText1!.copyWith(color: Colors.white));
+                              textStyle: context.textTheme.bodyText1!
+                                  .copyWith(color: Colors.white));
                         },
                         padding: const EdgeInsets.all(5),
                         icon: const Icon(Icons.download_outlined),
@@ -195,14 +231,18 @@ class _ImageScreenState extends State<ImageScreen> {
                         onPressed: () => showPopoverWB(
                           context: context,
                           onConfirm: () async {
+                            back() => context.back();
                             (await widget.imageFile).deleteSync();
-                            context.back();
-                            context.back();
-                            if (widget.fetchAssets != null) widget.fetchAssets!();
+                            back();
+                            back();
+                            if (widget.fetchAssets != null) {
+                              widget.fetchAssets!();
+                            }
                           },
                           builder: (cxt) => Text(
                             "Delete Image Permanently?",
-                            style: context.textTheme.bodyText1!.copyWith(fontSize: 17),
+                            style: context.textTheme.bodyText1!
+                                .copyWith(fontSize: 17),
                           ),
                         ),
                         padding: const EdgeInsets.all(5),
@@ -215,20 +255,25 @@ class _ImageScreenState extends State<ImageScreen> {
               ),
             ),
             AnimatedAlign(
-              alignment: !_isOpen ? const Alignment(-1, -1.25) : const Alignment(-1, -1),
+              alignment: !_isOpen
+                  ? const Alignment(-1, -1.25)
+                  : const Alignment(-1, -1),
               duration: const Duration(milliseconds: 200),
               child: AnimatedOpacity(
                 opacity: _isOpen ? 1 : 0,
                 duration: const Duration(milliseconds: 150),
                 child: SafeArea(
                   child: Material(
-                    color: context.isDark ? Colors.black.withAlpha(150) : Colors.white.withAlpha(130),
+                    color: context.isDark
+                        ? Colors.black.withAlpha(150)
+                        : Colors.white.withAlpha(130),
                     borderRadius: const BorderRadius.only(
                       bottomRight: Radius.circular(10),
                     ),
                     child: IconButton(
                       onPressed: context.back,
-                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 10),
                       icon: const Icon(Icons.chevron_left),
                     ),
                   ),
@@ -236,14 +281,17 @@ class _ImageScreenState extends State<ImageScreen> {
               ),
             ),
             AnimatedAlign(
-              alignment: !_isOpen ? const Alignment(1, -1.25) : const Alignment(1, -1),
+              alignment:
+                  !_isOpen ? const Alignment(1, -1.25) : const Alignment(1, -1),
               duration: const Duration(milliseconds: 200),
               child: AnimatedOpacity(
                 opacity: _isOpen ? 1 : 0,
                 duration: const Duration(milliseconds: 150),
                 child: SafeArea(
                   child: Material(
-                    color: context.isDark ? Colors.black.withAlpha(150) : Colors.white.withAlpha(130),
+                    color: context.isDark
+                        ? Colors.black.withAlpha(150)
+                        : Colors.white.withAlpha(130),
                     borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(10),
                     ),
@@ -252,7 +300,8 @@ class _ImageScreenState extends State<ImageScreen> {
                       padding: const EdgeInsets.all(20),
                       child: Text(
                         "Details",
-                        style: context.textTheme.headline6!.copyWith(fontWeight: FontWeight.w500),
+                        style: context.textTheme.headline6!
+                            .copyWith(fontWeight: FontWeight.w500),
                       ),
                     ),
                   ),

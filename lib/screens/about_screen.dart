@@ -39,7 +39,8 @@ class AboutScreen extends StatelessWidget {
                             children: [
                               Text(
                                 appName,
-                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
                               ),
                               Text(
                                 "Version ${snapshot.data != null ? snapshot.data!.version : 0.0}",
@@ -56,8 +57,10 @@ class AboutScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 16),
                               TextButton(
-                                style: TextButton.styleFrom(primary: Colors.blue[300]),
-                                onPressed: () => showLicensePage(context: context),
+                                style: TextButton.styleFrom(
+                                    foregroundColor: Colors.blue[300]),
+                                onPressed: () =>
+                                    showLicensePage(context: context),
                                 child: const Text("Licenses"),
                               ),
                             ],
